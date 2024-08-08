@@ -17,5 +17,5 @@ jobs:
         with:
           path: |
             scripts/script1.js
-            script/script2.js
+            scripts/script2.js
           parallel: true
