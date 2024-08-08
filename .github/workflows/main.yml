@@ -15,4 +15,7 @@ jobs:
       - name: Run local k6 test
         uses: grafana/run-k6-action@v1
         with:
-          path: scripts/script1.js
+          path: |
+            scripts/script1.js
+            script/script2.js
+          parallel: true
