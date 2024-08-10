@@ -30,10 +30,29 @@ jobs:
 
       - name: Setup K6
         uses: grafana/setup-k6-action@v1
-      - name: Run local k6 test
+        
+      - name: Run all scripts
+        if: ${{ github.event.inputs.scripts == 'All' }}
         uses: grafana/run-k6-action@v1
         with:
           path: |
-            scripts/script1.js
-            scripts/script2.js
+            scripts/Admin/script1.js
+            scripts/Landlord/script2.js
           parallel: true
+
+      - name: Run Admin script
+        if: ${{ github.event.inputs.scripts == 'Admin' }}
+        uses: grafana/run-k6-action@v1
+        with:
+          path: |
+            scripts/Admin/script1.js
+          parallel: true
+
+      - name: Run Landlord script
+        if: ${{ github.event.inputs.scripts == 'Landlord' }}
+        uses: grafana/run-k6-action@v1
+        with:
+          path: |
+            scripts/Landlord/script2.js
+          parallel: true
+       
