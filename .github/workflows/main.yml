@@ -2,6 +2,24 @@ name: k6 Load Test
 
 on:
   workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Select the environment to run the test'
+        required: true
+        default: staging
+        type: choice
+        options:
+          - staging
+      scripts:
+        description: 'Select the scripts to run'
+        required: true
+        type: choice
+        options:
+          - All
+          - Admin
+          - Landlord
+    
+  
 
 jobs:
   run-test:
