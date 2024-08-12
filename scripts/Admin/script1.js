@@ -5,7 +5,7 @@ export const options = {
   iterations:1
 //   duration: '30s',
   thresholds:{
-    'group_duration{group:::Admin_launch}': ['max>=0']
+    'group_duration{group:::Admin_launch}': ['max>=0'],
 }
 };
 export default function () {
