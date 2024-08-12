@@ -60,5 +60,5 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: k6-summary
-          path: scripts/Landlord/csvContent.csv
+          path: csvContent.csv
        
