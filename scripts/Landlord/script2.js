@@ -27,7 +27,7 @@ export function handleSummary(data) {
     }
   }
   return {
-    csvContent: csvContent.csv,
+    'csvContent.csv': csvContent,
   }
 
 }
