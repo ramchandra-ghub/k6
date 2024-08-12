@@ -1,5 +1,5 @@
 name: k6 Load Test
-
+permissions: write-all
 on:
   workflow_dispatch:
     inputs:
