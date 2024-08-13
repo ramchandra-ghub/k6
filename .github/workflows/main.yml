@@ -36,14 +36,14 @@ jobs:
         uses: grafana/run-k6-action@v1
         with:
           path: |
-             if [[${{github.event.inputs.scripts}} == 'All']]; then
+             if [[${{inputs.scripts}} == 'All']]; then
                 scripts/Admin/script1.js
                 scripts/Landlord/script2.js
              fi
-             if [[${{github.event.inputs.scripts}} == 'Admin']]; then
+             if [[${{inputs.scripts}} == 'Admin']]; then
                 scripts/Admin/script1.js
              fi
-             if [[${{github.event.inputs.scripts}} == 'Landlord']]; then
+             if [[${{inputs.scripts}} == 'Landlord']]; then
                 scripts/Landlord/script2.js
              fi
           parallel: true
