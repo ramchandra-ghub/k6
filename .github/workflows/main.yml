@@ -32,29 +32,46 @@ jobs:
         uses: grafana/setup-k6-action@v1
         
       - name: Run all scripts
-        if: ${{ github.event.inputs.scripts == 'All' }}
+        # if: ${{ github.event.inputs.scripts == 'All' }}
         uses: grafana/run-k6-action@v1
         with:
           path: |
-            scripts/Admin/script1.js
-            scripts/Landlord/script2.js
+             if [[${{github.event.inputs.scripts}} == 'All']]; then
+                scripts/Admin/script1.js
+                scripts/Landlord/script2.js
+             fi
+             if [[${{github.event.inputs.scripts}} == 'Admin']]; then
+                scripts/Admin/script1.js
+             fi
+             if [[${{github.event.inputs.scripts}} == 'Landlord']]; then
+                scripts/Landlord/script2.js
+             fi
           parallel: true
 
-      - name: Run Admin script
-        if: ${{ github.event.inputs.scripts == 'Admin' }}
-        uses: grafana/run-k6-action@v1
-        with:
-          path: |
-            scripts/Admin/script1.js
-          parallel: true
+      # - name: Run all scripts
+      #   if: ${{ github.event.inputs.scripts == 'All' }}
+      #   uses: grafana/run-k6-action@v1
+      #   with:
+      #     path: |
+      #       scripts/Admin/script1.js
+      #       scripts/Landlord/script2.js
+      #     parallel: true
 
-      - name: Run Landlord script
-        if: ${{ github.event.inputs.scripts == 'Landlord' }}
-        uses: grafana/run-k6-action@v1
-        with:
-          path: |
-            scripts/Landlord/script2.js
-          parallel: true
+      # - name: Run Admin script
+      #   if: ${{ github.event.inputs.scripts == 'Admin' }}
+      #   uses: grafana/run-k6-action@v1
+      #   with:
+      #     path: |
+      #       scripts/Admin/script1.js
+      #     parallel: true
+
+      # - name: Run Landlord script
+      #   if: ${{ github.event.inputs.scripts == 'Landlord' }}
+      #   uses: grafana/run-k6-action@v1
+      #   with:
+      #     path: |
+      #       scripts/Landlord/script2.js
+      #     parallel: true
 
       - name: Upload k6 Test Summary Artifact
         uses: actions/upload-artifact@v3
