@@ -1,0 +1,52 @@
+name: k6-xk6-parallel-tests
+permissions: write-all
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Select the environment to run the test'
+        required: true
+        default: staging
+        type: choice
+        options:
+          - staging
+      scripts:
+        description: 'Select the scripts to run'
+        required: true
+        type: choice
+        options:
+          - All
+          - Admin
+          - Landlord
+    
+  
+
+jobs:
+  run-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        
+      # Install Go
+      - name: Install Go
+        uses: actions/setup-go@v5
+
+       # Build xk6 binary with extensions
+      - name: Build custom xk6 binary
+        run: |
+          go install go.k6.io/xk6/cmd/xk6@latest
+          xk6 build --with github.com/avitalique/xk6-file@latest --with github.com/LeonAdato/xk6-output-statsd
+
+        # Run multiple K6 tests in parallel using background processes
+      - name: Run all scripts
+        run: |
+          ./k6 run scripts/Admin/script1.js &
+          ./k6 run scripts/Landlord/script2.js &
+          wait
+
+      - name: Upload k6 Test Summary Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: k6-summary
+          path: csvContent.csv
