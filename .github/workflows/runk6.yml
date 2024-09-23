@@ -45,8 +45,8 @@ jobs:
           ./k6 run scripts/Landlord/script2.js &
           wait
 
-      - name: Upload k6 Test Summary Artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: k6-summary
-          path: csvContent.csv
+      # - name: Upload k6 Test Summary Artifact
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: k6-summary
+      #     path: csvContent.csv
