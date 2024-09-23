@@ -5,12 +5,12 @@ export const options = {
   iterations:1,
 //   duration: '30s',
   thresholds:{
-    'group_duration{group:::Admin_launch}': ['max>=0'],
+    'group_duration{group:::LL_Launch}': ['max>=0'],
 }
 };
 export default function () {
     let response
-  group('Admin_launch', function(){
+  group('LL_Launch', function(){
     response = http.get('http://test.k6.io');
   })
   console.log(response.status)
