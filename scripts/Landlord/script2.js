@@ -28,7 +28,7 @@ export function handleSummary(data) {
   }
   return {
     'csvContent.csv': csvContent,
-    textSummary(data, { indent: '->', enableColors:true })
+    stdout: textSummary(data, { indent: '->', enableColors:true })
   }
 
 }
