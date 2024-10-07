@@ -41,16 +41,14 @@ jobs:
         # Run multiple K6 tests in parallel using background processes
       - name: Run the test
         run: |
-          if [${{inputs.scripts}} == 'All']; then
+          if [ "${{ github.event.inputs.scripts }}" == 'All' ]; then
             ./k6 run scripts/Admin/script1.js &
             ./k6 run scripts/Landlord/script2.js &
             wait
-          fi
-          if [${{inputs.scripts}} == 'Admin']; then
+          elif [ "${{ github.event.inputs.scripts }}" == 'Admin' ]; then
             ./k6 run scripts/Admin/script1.js
-          fi
-          if [${{inputs.scripts}} == 'Admin']; then
-            ./k6 run scripts/Admin/script1.js
+          elif [ "${{ github.event.inputs.scripts }}" == 'Landlord' ]; then
+            ./k6 run scripts/Landlord/script2.js
           fi
 
       - name: Upload k6 Test Summary Artifact
