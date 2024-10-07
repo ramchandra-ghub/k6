@@ -56,13 +56,13 @@ jobs:
           rampup_ll=$(($users * 4))
            
           if [ "${{ github.event.inputs.scripts }}" == 'All' ]; then
-            ./k6 run -stage ${rampup_admin}:${users},${steady_time}:${users}, ${rampup_admin}:0 scripts/Admin/script1.js &
-            ./k6 run -stage ${rampup_admin}:${users},${steady_time}:${users}, ${rampup_admin}:0 scripts/Landlord/script2.js &
+            ./k6 run --stage ${rampup_admin}:${users},${steady_time}:${users},${rampup_admin}:0 scripts/Admin/script1.js &
+            ./k6 run --stage ${rampup_admin}:${users},${steady_time}:${users},${rampup_admin}:0 scripts/Landlord/script2.js &
             wait
           elif [ "${{ github.event.inputs.scripts }}" == 'Admin' ]; then
-            ./k6 run -stage ${rampup_admin}:${users},${steady_time}:${users}, ${rampup_admin}:0 scripts/Admin/script1.js
+            ./k6 run --stage ${rampup_admin}:${users},${steady_time}:${users},${rampup_admin}:0 scripts/Admin/script1.js
           elif [ "${{ github.event.inputs.scripts }}" == 'Landlord' ]; then
-            ./k6 run -stage ${rampup_admin}:${users},${steady_time}:${users}, ${rampup_admin}:0 scripts/Landlord/script2.js
+            ./k6 run --stage ${rampup_admin}:${users},${steady_time}:${users},${rampup_admin}:0 scripts/Landlord/script2.js
           fi
 
       - name: Upload k6 Test Summary Artifact
