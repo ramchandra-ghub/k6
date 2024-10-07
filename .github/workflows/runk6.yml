@@ -49,8 +49,8 @@ jobs:
         # Run multiple K6 tests in parallel using background processes
       - name: Run the test
         run: |
-          users=$((${inputs.concurrent_users}))
-          steady_time=$((${inputs.steady_state_time}))
+          users=$((${{inputs.concurrent_users}}))
+          steady_time=$((${{inputs.steady_state_time}}))
 
           rampup_admin=$(($users * 2))
           rampup_ll=$(($users * 4))
