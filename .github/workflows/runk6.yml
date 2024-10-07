@@ -39,11 +39,19 @@ jobs:
           xk6 build --with github.com/avitalique/xk6-file@latest --with github.com/LeonAdato/xk6-output-statsd
 
         # Run multiple K6 tests in parallel using background processes
-      - name: Run all scripts
+      - name: Run the test
         run: |
-          ./k6 run scripts/Admin/script1.js &
-          ./k6 run scripts/Landlord/script2.js &
-          wait
+          if [${{inputs.scripts}} == 'All']; then
+            ./k6 run scripts/Admin/script1.js &
+            ./k6 run scripts/Landlord/script2.js &
+            wait
+          fi
+          if [${{inputs.scripts}} == 'Admin']; then
+            ./k6 run scripts/Admin/script1.js
+          fi
+          if [${{inputs.scripts}} == 'Admin']; then
+            ./k6 run scripts/Admin/script1.js
+          fi
 
       - name: Upload k6 Test Summary Artifact
         uses: actions/upload-artifact@v3
