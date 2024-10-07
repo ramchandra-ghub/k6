@@ -54,6 +54,10 @@ jobs:
 
           rampup_admin=$(($users * 2))
           rampup_ll=$(($users * 4))
+
+          echo "Users: ${users}"
+          echo "Steady Time: ${steady_time} seconds"
+          echo "Rampup Admin: ${rampup_admin} seconds"
            
           if [ "${{ github.event.inputs.scripts }}" == 'All' ]; then
             ./k6 run --stage ${rampup_admin}s:${users},${steady_time}s:${users},${rampup_admin}s:0 scripts/Admin/script1.js &
