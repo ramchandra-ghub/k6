@@ -18,9 +18,17 @@ on:
           - All
           - Admin
           - Landlord
-    
-  
-
+      concurrent_users:
+        description: 'Number of concurrent users'
+        required: true
+        default: "2"
+        type: string
+      steady_state_time:
+        description: 'Steady-state time in minutes'
+        required: true
+        default: "1"
+        type: string
+       
 jobs:
   run-test:
     runs-on: ubuntu-latest
@@ -41,14 +49,20 @@ jobs:
         # Run multiple K6 tests in parallel using background processes
       - name: Run the test
         run: |
+          users=$((${GITHUB_EVENT_INPUTS_CONCURRENT_USERS}))
+          steady_time=$((${GITHUB_EVENT_INPUTS_STEADY_STATE_TIME}))
+
+          rampup_admin = $(($users * 2))
+          rampup_ll = $(($users * 4))
+           
           if [ "${{ github.event.inputs.scripts }}" == 'All' ]; then
-            ./k6 run scripts/Admin/script1.js &
-            ./k6 run scripts/Landlord/script2.js &
+            ./k6 run --stage ${rampup_admin}:${users},${steady_time}:${users}, ${rampup_admin}:0 scripts/Admin/script1.js &
+            ./k6 run --stage ${rampup_admin}:${users},${steady_time}:${users}, ${rampup_admin}:0 scripts/Landlord/script2.js &
             wait
           elif [ "${{ github.event.inputs.scripts }}" == 'Admin' ]; then
-            ./k6 run scripts/Admin/script1.js
+            ./k6 run --stage ${rampup_admin}:${users},${steady_time}:${users}, ${rampup_admin}:0 scripts/Admin/script1.js
           elif [ "${{ github.event.inputs.scripts }}" == 'Landlord' ]; then
-            ./k6 run scripts/Landlord/script2.js
+            ./k6 run --stage ${rampup_admin}:${users},${steady_time}:${users}, ${rampup_admin}:0 scripts/Landlord/script2.js
           fi
 
       - name: Upload k6 Test Summary Artifact
