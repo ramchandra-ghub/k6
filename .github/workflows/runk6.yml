@@ -35,42 +35,44 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        
+      - name: ssmTest
+        run: |
+          aws ssm send-command --instance-ids "hello" --document-name "AWS-Run" --parameters commands="echo 'Hello'" --output text
       # Install Go
-      - name: Install Go
-        uses: actions/setup-go@v5
+      # - name: Install Go
+      #   uses: actions/setup-go@v5
 
-       # Build xk6 binary with extensions
-      - name: Build custom xk6 binary
-        run: |
-          go install go.k6.io/xk6/cmd/xk6@latest
-          xk6 build --with github.com/avitalique/xk6-file@latest --with github.com/LeonAdato/xk6-output-statsd
+      #  # Build xk6 binary with extensions
+      # - name: Build custom xk6 binary
+      #   run: |
+      #     go install go.k6.io/xk6/cmd/xk6@latest
+      #     xk6 build --with github.com/avitalique/xk6-file@latest --with github.com/LeonAdato/xk6-output-statsd
 
-        # Run multiple K6 tests in parallel using background processes
-      - name: Run the test
-        run: |
-          users=${{inputs.concurrent_users}}
-          steady_time=${{inputs.steady_state_time}}
-          # Ramp up time - 1 every 2 seconds for admin script
-          rampup_admin=$(($users * 2))
-          rampup_ll=$(($users * 4))
+      #   # Run multiple K6 tests in parallel using background processes
+      # - name: Run the test
+      #   run: |
+      #     users=${{inputs.concurrent_users}}
+      #     steady_time=${{inputs.steady_state_time}}
+      #     # Ramp up time - 1 every 2 seconds for admin script
+      #     rampup_admin=$(($users * 2))
+      #     rampup_ll=$(($users * 4))
 
-          echo "Users: ${users}"
-          echo "Steady Time: ${steady_time} seconds"
-          echo "Rampup Admin: ${rampup_admin} seconds"
+      #     echo "Users: ${users}"
+      #     echo "Steady Time: ${steady_time} seconds"
+      #     echo "Rampup Admin: ${rampup_admin} seconds"
            
-          if [ "${{ github.event.inputs.scripts }}" == 'All' ]; then
-            ./k6 run --stage ${rampup_admin}s:${users},${steady_time}m:${users},${rampup_admin}s:0 scripts/Admin/script1.js &
-            ./k6 run --stage ${rampup_admin}s:${users},${steady_time}m:${users},${rampup_admin}s:0 scripts/Landlord/script2.js &
-            wait
-          elif [ "${{ github.event.inputs.scripts }}" == 'Admin' ]; then
-            ./k6 run --stage ${rampup_admin}s:${users},${steady_time}m:${users},${rampup_admin}s:0 scripts/Admin/script1.js
-          elif [ "${{ github.event.inputs.scripts }}" == 'Landlord' ]; then
-            ./k6 run --stage ${rampup_admin}s:${users},${steady_time}m:${users},${rampup_admin}s:0 scripts/Landlord/script2.js
-          fi
+      #     if [ "${{ github.event.inputs.scripts }}" == 'All' ]; then
+      #       ./k6 run --stage ${rampup_admin}s:${users},${steady_time}m:${users},${rampup_admin}s:0 scripts/Admin/script1.js &
+      #       ./k6 run --stage ${rampup_admin}s:${users},${steady_time}m:${users},${rampup_admin}s:0 scripts/Landlord/script2.js &
+      #       wait
+      #     elif [ "${{ github.event.inputs.scripts }}" == 'Admin' ]; then
+      #       ./k6 run --stage ${rampup_admin}s:${users},${steady_time}m:${users},${rampup_admin}s:0 scripts/Admin/script1.js
+      #     elif [ "${{ github.event.inputs.scripts }}" == 'Landlord' ]; then
+      #       ./k6 run --stage ${rampup_admin}s:${users},${steady_time}m:${users},${rampup_admin}s:0 scripts/Landlord/script2.js
+      #     fi
 
-      - name: Upload k6 Test Summary Artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: k6-summary
-          path: csvContent.csv
+      # - name: Upload k6 Test Summary Artifact
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: k6-summary
+      #     path: csvContent.csv
