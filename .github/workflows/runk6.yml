@@ -1,5 +1,7 @@
 name: k6-xk6-parallel-tests
 permissions: write-all
+env:
+  test: ${{ secrets.TEST }}
 on:
   workflow_dispatch:
     inputs:
@@ -44,8 +46,7 @@ jobs:
       # - name: ssmTest
         # run: |
         #   aws ssm send-command --instance-ids "hello" --document-name "AWS-Run" --parameters '{"commands":["echo Hello from SSM!"]}' --output text
-        env:
-          a: ${{ secrets.TEST }}
+        
       
       # Install Go
       - name: Install Go
@@ -80,7 +81,7 @@ jobs:
             command="./k6 run --stage ${rampup_admin}s:${users},${steady_time}m:${users},${rampup_admin}s:0 scripts/Landlord/script2.js"
           fi
           echo "Running command: $command"
-          echo ${{ env.a }} 
+          echo ${{ env.test }} 
         # eval $command
 
       - name: Upload k6 Test Summary Artifact
