@@ -76,7 +76,7 @@ jobs:
             command="./k6 run --stage ${rampup_admin}s:${users},${steady_time}m:${users},${rampup_admin}s:0 scripts/Landlord/script2.js"
           fi
           echo "Running command: $command"
-        # eval $command
+          eval $command
 
       - name: Upload k6 Test Summary Artifact
         uses: actions/upload-artifact@v3
