@@ -28,6 +28,11 @@ on:
         required: true
         default: "1"
         type: string
+      instance_id:
+        description: 'Instance in which the test should run'
+        required: true
+        default: "hello"
+        type: string
        
 jobs:
   run-test:
