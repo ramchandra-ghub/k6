@@ -1,4 +1,4 @@
-name: k6-xk6-parallel-tests
+name: inputs-test
 permissions: write-all
 env:
   ENV: "staging"
