@@ -34,9 +34,9 @@ jobs:
     steps:
     - name: Set Inputs
       run: |
-        echo "ENV=${{ github.event.inputs.environment || env.ENV }}" >> $GITHUB_ENV
-        echo "CONC_USERS=${{ github.event.inputs.concurrent_users || env.CONC_USERS }}" >> $GITHUB_ENV
-        echo "TIME=${{ github.event.inputs.steady_state_time || env.STEADY_STATE_TIME }}" >> $GITHUB_ENV
+        echo "ENV=${{ inputs.environment || env.ENV }}" >> $GITHUB_ENV
+        echo "CONC_USERS=${{ inputs.concurrent_users || env.CONC_USERS }}" >> $GITHUB_ENV
+        echo "TIME=${{ inputs.steady_state_time || env.STEADY_STATE_TIME }}" >> $GITHUB_ENV
 
     - name: Print Inputs
       run: |
