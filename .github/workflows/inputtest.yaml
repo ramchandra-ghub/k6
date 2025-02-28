@@ -5,8 +5,8 @@ env:
   CONC_USERS: "50"
   STEADY_STATE_TIME: "30"
 on:
-  schedule:
-  - cron: "*/5 * * * *" # run every 5 mins debug..
+  # schedule:
+  # - cron: "*/5 * * * *" # run every 5 mins debug..
   workflow_dispatch:
     inputs:
       environment:
