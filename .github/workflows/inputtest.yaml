@@ -1,0 +1,49 @@
+name: k6-xk6-parallel-tests
+permissions: write-all
+env:
+  test: ${{secrets.TEST}}
+on:
+  schedule:
+  - cron: "*/5 * * * *" # run every 5 mins debug
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Select the environment to run the test'
+        required: true
+        default: staging
+        type: choice
+        options:
+          - staging
+      concurrent_users:
+        description: 'Number of concurrent users'
+        required: true
+        default: "2"
+        type: string
+      steady_state_time:
+        description: 'Steady-state time in minutes'
+        required: true
+        default: "1"
+        type: string
+        
+env:
+  ENV: "staging"
+  CONC_USERS: "50"
+  STEADY_STATE_TIME: "30"
+
+jobs:
+  run-test:
+    runs-on: ubuntu-latest
+    environment: staging
+    steps:
+    - name: Set Inputs
+      run: |
+        echo "ENV=${{ github.event.inputs.environment || env.ENV }}" >> $GITHUB_ENV
+        echo "CONC_USERS=${{ github.event.inputs.concurrent_users || env.CONC_USERS }}" >> $GITHUB_ENV
+        echo "TIME=${{ github.event.inputs.steady_state_time || env.STEADY_STATE_TIME }}" >> $GITHUB_ENV
+
+    - name: Print Inputs
+      run: |
+        echo "Running test in environment: $ENV"
+        echo "Concurrent Users: $CONC_USERS"
+        echo "Test Duration: $TIME seconds"
+  
